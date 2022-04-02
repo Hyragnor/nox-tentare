@@ -27,19 +27,7 @@ export default class Demo extends Phaser.Scene {
 
 		this.anims.createFromAseprite(ASSET_KEYS.DWAYNE);
 		const fields = 
-		this.dwayne = createDwayne([{
-			sprite: this.physics.add.sprite(12, 16, ASSET_KEYS.DWAYNE ),
-			animationStyle: 'left',
-			direction: 'right',
-		},{
-			sprite: this.physics.add.sprite(12, 48, ASSET_KEYS.DWAYNE ),
-			animationStyle: 'forward',
-			direction: 'right',
-		},{
-			sprite: this.physics.add.sprite(12, 80, ASSET_KEYS.DWAYNE ),
-			animationStyle: 'right',
-			direction: 'right',
-		},]);
+		this.dwayne = createDwayne(this);
 		this.entities.add(this.dwayne);
 	}
 

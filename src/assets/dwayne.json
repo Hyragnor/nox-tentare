@@ -642,7 +642,8 @@
    { "name": "dwayne-fLeft", "from": 14, "to": 27, "direction": "forward" },
    { "name": "dwayne-bLeft", "from": 28, "to": 41, "direction": "forward" },
    { "name": "dwayne-fRight", "from": 42, "to": 55, "direction": "forward" },
-   { "name": "dwayne-bRight", "from": 56, "to": 69, "direction": "forward" }
+   { "name": "dwayne-bRight", "from": 56, "to": 69, "direction": "forward" },
+   { "name": "dwayne-idle", "from": 69, "to": 69, "direction": "forward" }
   ]
  }
 }

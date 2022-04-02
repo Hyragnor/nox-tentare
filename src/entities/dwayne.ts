@@ -1,3 +1,4 @@
+import { ASSET_KEYS } from '../assetLoader';
 import { Entity, Sprite, UpdateParams } from '../types';
 
 const styleToName = (style: DwayneAnimationStyle): string => {
@@ -7,18 +8,68 @@ const styleToName = (style: DwayneAnimationStyle): string => {
 	case 'back-left': return 'dwayne-bLeft';
 	case 'right': return 'dwayne-fRight';
 	case 'back-right': return 'dwayne-bRight';
+	case 'idle': return 'idle';
 	}
 }
 
-export function createDwayne(fields: DwayneField[]): Dwayne {
-	const data = {
-		state: 'forward',
-	}
-	fields.forEach(({ sprite }) => sprite.body.setSize(16, 16));
-	;
+const TILESIZE = 32;
+
+const createArray = (width: number, height: number ) => {
+	return [
+		['w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
+		['w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w', ],
+	];
+};
+
+export function createDwayne(
+	context: Phaser.Scene,
+	{ map, x, y }: { map: string[][], x: number, y: number } = {
+		x: 0, y: 5, map: createArray(16, 14),
+	}): Dwayne
+{
+	map[x][y] = 'd';
+	const fields: DwayneField[] = [];
+
+	const startNeighbors = () => {
+		map[x][y] = 'd';
+		const points = [ -1, 0, 1 ];
+		points.forEach(dx => {
+			points.forEach(dy => {
+				if (!map[x+dx]) { return; }
+				const next = map[x+dx][y+dy];
+				if (!next || next != 'f') { return; }
+
+				createDwayne(context, { map, x: x+dx, y: y+dy });
+			})
+		});
+	};
+
+	const sprite = context.physics.add.sprite(x * TILESIZE, y * TILESIZE, ASSET_KEYS.DWAYNE);
+	sprite.body.setSize(TILESIZE/2, TILESIZE/2);
+	const startField: DwayneField = {
+		animationStyle: 'forward',
+		direction: 'right',
+		sprite: sprite,
+		active: true,
+	};
+	fields.push(startField);
+	sprite.play({ key: styleToName(startField.animationStyle), repeat: 0 }, true);
+	sprite.on('animationcomplete', startNeighbors)
+
 	const update = (updateParams: UpdateParams) => {
-		fields.forEach(({ sprite, animationStyle }) => sprite.play({ key: styleToName(animationStyle), repeat: -1 }, true));
-		;
+
 	};
 	return {
 		update
@@ -29,10 +80,11 @@ export type Dwayne = {
 
 } & Entity
 
-type DwayneAnimationStyle = 'forward' | 'left' | 'right' | 'back-left' | 'back-right';
+type DwayneAnimationStyle = 'idle' | 'forward' | 'left' | 'right' | 'back-left' | 'back-right';
 
 export type DwayneField = { 
 	sprite: Sprite;
 	animationStyle: DwayneAnimationStyle;
 	direction: 'up' | 'down' | 'left' | 'right';
+	active: boolean;
 }
