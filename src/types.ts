@@ -5,3 +5,5 @@ export type Entity = {
 export type UpdateParams = {
 
 }
+
+export type Sprite = Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;

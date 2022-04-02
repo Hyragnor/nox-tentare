@@ -1,13 +1,26 @@
 import Phaser from 'phaser';
+import Game from './scenes/Game';
 
-export default {
-  type: Phaser.AUTO,
-  parent: 'game',
-  backgroundColor: '#33A5E7',
-  scale: {
-    width: 800,
-    height: 600,
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH
-  }
+const config: Phaser.Types.Core.GameConfig =  {
+	type: Phaser.AUTO,
+	parent: 'game',
+	backgroundColor: '#33A5E7',
+	scale: {
+		width: 640,
+		height: 640,
+		mode: Phaser.Scale.FIT,
+		autoCenter: Phaser.Scale.CENTER_BOTH
+	},
+	render: {
+		pixelArt: true,
+	},
+	physics: {
+		default: 'arcade',
+		arcade: {
+			debug: true,
+		}
+	},
+	scene: [Game]
 };
+
+export { config };
