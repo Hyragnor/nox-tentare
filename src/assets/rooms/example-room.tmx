@@ -3,7 +3,9 @@
  <editorsettings>
   <export target="first-room.json" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../atlas.tsx"/>
+ <tileset firstgid="1" name="atlas" tilewidth="32" tileheight="32" tilecount="144" columns="12">
+  <image source="../tiles/atlas.png" width="384" height="384"/>
+ </tileset>
  <layer id="1" name="floor" width="16" height="12">
   <data encoding="csv">
 3221225533,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1073741885,

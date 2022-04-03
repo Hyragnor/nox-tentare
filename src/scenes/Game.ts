@@ -21,6 +21,11 @@ export default class Demo extends Phaser.Scene {
 	}
 
 	create() {
+		const map = this.make.tilemap({ key: ASSET_KEYS.MAP });
+		const tileset = map.addTilesetImage(ASSET_KEYS.TILES_NAME, ASSET_KEYS.TILES);
+		map.createLayer(ASSET_KEYS.TILE_FLOOR, tileset);
+		map.createLayer(ASSET_KEYS.TILE_INTERACTIVE_OBJECTS, tileset);
+
 		this.anims.createFromAseprite(ASSET_KEYS.PLAYER);
 		this.player = createPlayer(this.physics.add.sprite(48, 48, ASSET_KEYS.PLAYER));
 		this.entities.add(this.player);
