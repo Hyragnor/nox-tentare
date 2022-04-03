@@ -14,7 +14,7 @@ const styleToName = (style: DwayneAnimationStyle): string => {
 
 const TILESIZE = 32;
 
-const createArray = (width: number, height: number ) => {
+const createDummyArray = () => {
 	return [
 		['w','w','w','w','w','w','w','w','w','w','w','w','w','w','w','w', ],
 		['w','f','f','f','f','f','f','f','f','f','f','f','f','f','f','w', ],
@@ -36,7 +36,7 @@ const createArray = (width: number, height: number ) => {
 export function createDwayne(
 	context: Phaser.Scene,
 	{ map, x, y, xOffs, yOffs }: { map: string[][], x: number, y: number, xOffs: number, yOffs: number } = {
-		x: 0, y: 5, map: createArray(16, 14), xOffs: 0, yOffs: 0
+		x: 0, y: 5, map: createDummyArray(), xOffs: 0, yOffs: 0
 	}): Dwayne
 {
 	map[x][y] = 'd';
