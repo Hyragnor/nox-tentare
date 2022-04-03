@@ -27,6 +27,5 @@ export function assetLoader(context: Phaser.Scene) {
 }
 
 export const generateMap = (context: Phaser.Scene) => {
-	const map = context.make.tilemap({ key: ASSET_KEYS.MAP });
-	
+	// const map = context.make.tilemap({ key: ASSET_KEYS.MAP });	
 };

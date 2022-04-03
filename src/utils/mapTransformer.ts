@@ -3,7 +3,6 @@ import Phaser from 'phaser';
 
 const map2StringArray = (map: Phaser.Tilemaps.Tilemap): string[][] => {
 	const layer = map.getLayer(ASSET_KEYS.TILE_FLOOR);
-	const collision = map.getLayer(ASSET_KEYS.TILE_INTERACTIVE_OBJECTS);
 	const arr = [];
 	for (let y = 0; y < layer.height; y++) {
 		const line = []
