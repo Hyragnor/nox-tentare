@@ -5,9 +5,9 @@ const map2StringArray = (map: Phaser.Tilemaps.Tilemap): string[][] => {
 	const layer = map.getLayer(ASSET_KEYS.TILE_FLOOR);
 	const collision = map.getLayer(ASSET_KEYS.TILE_INTERACTIVE_OBJECTS);
 	const arr = [];
-	for (let x = 0; x < layer.width; x++) {
+	for (let y = 0; y < layer.height; y++) {
 		const line = []
-		for (let y = 0; y < layer.height; y++) {
+		for (let x = 0; x < layer.width; x++) {
 			const tile = layer.data[y][x];
 			line.push(tile.properties.key !== 'f' ? 'w': 'f');
 		}

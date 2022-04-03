@@ -33,7 +33,7 @@ const createDummyArray = () => {
 	];
 };
 
-const indices2keys = (x: number, y: number) => `${x} ${y}`;
+export const fields: DwayneField[] = [];
 
 export function createDwayne(
 	context: Phaser.Scene,
@@ -43,8 +43,6 @@ export function createDwayne(
 	animationStyle: DwayneAnimationStyle = 'idle',
 	direction: Direction = 'right',
 ): Dwayne {
-	const fields: DwayneField[] = [];
-
 
 	const direction2Angle = (direction: Direction): number => {
 		switch(direction) {
@@ -58,61 +56,79 @@ export function createDwayne(
 	const findAnimation = (x: number, y:number): DwayneAnimationStyle => {
 		const points = [ -1, 0, 1 ];
 		let counter = 0;
-		points.forEach(dx => {
-			points.forEach(dy => {
+		points.forEach(dy => {
+			if (!map[y+dy]) { return; }
+			points.forEach(dx => {
 				if (dx === 0 && dy === 0) { return; }
-				if (!map[x+dx]) { return; }
-				const next = map[x+dx][y+dy];
+				const next = map[y+dy][x+dx];
 				if (next === 'd' || next === 'd!') {
 					counter ++;
 				}
 			});
 		});
 		if (counter === 1) {
-			if (map[x - 1] && map[x - 1][y - 1].startsWith('d')) { return 'right'; }
-			if (map[x - 1] && map[x - 1][y + 1].startsWith('d')) { return 'left'; }
-			if (map[x + 1] && map[x + 1][y + 1].startsWith('d')) { return 'back-right'; }
-			if (map[x + 1] && map[x + 1][y - 1].startsWith('d')) { return 'back-left'; }
+			if (map[y - 1] && map[y - 1][x - 1].startsWith('d')) { return 'right'; }
+			if (map[y - 1] && map[y - 1][x + 1].startsWith('d')) { return 'back-left'; }
+			if (map[y + 1] && map[y + 1][x + 1].startsWith('d')) { return 'back-right'; }
+			if (map[y + 1] && map[y + 1][x - 1].startsWith('d')) { return 'left'; }
 		}
 		return 'forward';
 	}
 
 	const findDirection = (x: number, y:number): Direction => {
-		if (map[0][y + 1].startsWith('d')) { return 'up'; }
-		if (map[x + 1] && map[x + 1][0].startsWith('d')) { return 'left'; }
-		if (map[0][y - 1].startsWith('d')) { return 'down'; }
+		if (map[y][x + 1] && map[y][x + 1].startsWith('d')) { return 'left'; }
+		if (map[y - 1] && map[y - 1][x].startsWith('d')) { return 'down'; }
+		if (map[y + 1] && map[y + 1][x].startsWith('d')) { return 'up'; }
+		if (map[y][x - 1] && map[y][x - 1].startsWith('d')) { return 'right'; }
 		return 'right';
 	}
 
-	const startNeighbors = () => {
-		const nextPieces: {x: number, y:number, dx: number, dy: number, animationStyle: DwayneAnimationStyle, direction: Direction }[] = [];
-		map[x][y] = 'd!';
+	const startNextWave = (x: number, y:number) => {
+		const nextPieces: {x: number, y:number, dx: number, dy: number }[] = [];
 		const points = [ -1, 0, 1 ];
-		points.forEach(dx => {
-			points.forEach(dy => {
-				if (!map[x+dx]) { return; }
-				const next = map[x+dx][y+dy];
+		points.forEach(dy => {
+			if (!map[y+dy]) { return; }
+			points.forEach(dx => {
+				const next = map[y+dy][x+dx];
 				if (!next || next != 'f' ) { return; }
 				const animation = findAnimation(x + dx, y + dy);
 				const direction = animation === 'forward' ? findDirection(x + dx, y + dy): 'right';
-				nextPieces.push({ x, y, dx, dy, animationStyle: animation, direction });
+				nextPieces.push({ x, y, dx, dy });
+				createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs }, animation, direction );
 			})
 		});
-		nextPieces.forEach(({ x, y, dx, dy, animationStyle, direction }) => { 
-			map[x+dx][y+dy] = 'd';
-			createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs }, animationStyle, direction );
+		nextPieces.forEach(({ x, y, dx, dy}) => { 
+			map[y+dy][x+dx] = 'd?';
 		});
+	};
+
+	const startNeighbors = () => {
+		map[y][x] = 'd~';
+		const done = !map.flat().find(element => element === 'd?');
+		if (!done) { return; }
+		for(let y = 0; y < map.length; y++) {
+			for(let x = 0; x < map[y].length; x++) {
+				if (map[y][x] === 'd~') {
+					startNextWave(x, y);
+				}
+			}
+		}
+		for(let y = 0; y < map.length; y++) {
+			for(let x = 0; x < map[y].length; x++) {
+				if (map[y][x] === 'd~') {
+					map[y][x] = 'd!'
+				}
+			}
+		}
 	};
 
 	const sprite = context.physics.add.sprite(x * TILESIZE + xOffs, y * TILESIZE + yOffs, ASSET_KEYS.DWAYNE);
 	sprite.body.setSize(TILESIZE/2, TILESIZE/2);
-	sprite.angle = direction2Angle(direction);
-	console.log(direction, sprite.angle)
+	sprite.angle = animationStyle === 'forward'? direction2Angle(direction): 0;
 	const startField: DwayneField = {
 		animationStyle,
 		direction,
 		sprite: sprite,
-		active: true,
 	};
 	fields.push(startField);
 	sprite.play({ key: styleToName(startField.animationStyle), repeat: 0 }, true);
@@ -138,5 +154,4 @@ export type DwayneField = {
 	sprite: Sprite;
 	animationStyle: DwayneAnimationStyle;
 	direction: Direction;
-	active: boolean;
 }
