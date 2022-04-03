@@ -8,6 +8,8 @@ import { createDwayne, Dwayne, dwayneSprites } from '../entities/dwayne';
 import { assetLoader, ASSET_KEYS } from '../assetLoader';
 import { map2StringArray } from '../utils/mapTransformer';
 
+import { createSounds, playNextSong } from '../utils/sound';
+
 export default class Demo extends Phaser.Scene {
 	constructor() {
 		super('GameScene');
@@ -49,9 +51,12 @@ export default class Demo extends Phaser.Scene {
 		this.dwayne = createDwayne(this, { map: mapAsArray, x: 0, y: 6, xOffs: 16, yOffs: 16});
 		this.entities.add(this.dwayne);
 
+		createSounds(this);
+		playNextSong();
 	}
 
-	update() {
+	deleteMeWhenSongChangeIsImplementedCorrectly: number = 0;
+	update(time: number, delta: number) {
 		const cursors = this.input.keyboard.createCursorKeys();
 		if(this.dwayne && dwayneSprites){
 			for(const sprite of dwayneSprites){
@@ -61,5 +66,12 @@ export default class Demo extends Phaser.Scene {
 			}
 		}
 		this.entities.forEach((entity) => entity.update({ cursors }));
+
+		// changes the song roughly every 4:18min, should be removed
+		this.deleteMeWhenSongChangeIsImplementedCorrectly += delta;
+		if (this.deleteMeWhenSongChangeIsImplementedCorrectly >= 260000) {
+			playNextSong();
+			this.deleteMeWhenSongChangeIsImplementedCorrectly -= 260000;
+		}
 	}
 }

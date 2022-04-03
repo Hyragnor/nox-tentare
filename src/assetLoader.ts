@@ -8,6 +8,10 @@ import tiles from './assets/rooms/atlas.png';
 
 import room_a from './assets/rooms/first-room.json';
 
+import song1 from './assets/music/nox tentare1.ogg';
+import song2 from './assets/music/nox tentare2.ogg';
+import song3 from './assets/music/nox tentare3.ogg';
+
 export const ASSET_KEYS = {
 	PLAYER: 'player',
 	DWAYNE: 'dwayne',
@@ -16,6 +20,9 @@ export const ASSET_KEYS = {
 	TILES_NAME: 'atlas', // equals the name of the tileset used in the map
 	TILE_FLOOR: 'floor',
 	TILE_INTERACTIVE_OBJECTS: 'interactive-objects',
+	MUSIC_1: 'music_1',
+	MUSIC_2: 'music_2',
+	MUSIC_3: 'music_3',
 }
 
 export function assetLoader(context: Phaser.Scene) {
@@ -24,6 +31,10 @@ export function assetLoader(context: Phaser.Scene) {
 
 	context.load.aseprite(ASSET_KEYS.PLAYER, playerImage, playerData);
 	context.load.aseprite(ASSET_KEYS.DWAYNE, dwayneImage, dwayneData);
+
+	context.load.audio(ASSET_KEYS.MUSIC_1, song1);
+	context.load.audio(ASSET_KEYS.MUSIC_2, song2);
+	context.load.audio(ASSET_KEYS.MUSIC_3, song3);
 }
 
 export const generateMap = (context: Phaser.Scene) => {
