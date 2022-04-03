@@ -33,7 +33,7 @@ const createDummyArray = () => {
 	];
 };
 
-export const fields: DwayneField[] = [];
+export const dwayneSprites: Phaser.Physics.Arcade.Sprite[] = [];
 
 export function createDwayne(
 	context: Phaser.Scene,
@@ -134,7 +134,7 @@ export function createDwayne(
 		direction,
 		sprite: sprite,
 	};
-	fields.push(startField);
+	dwayneSprites.push(sprite);
 	sprite.play({ key: styleToName(startField.animationStyle), repeat: 0 }, true);
 	sprite.on('animationcomplete', startNeighbors)
 
