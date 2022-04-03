@@ -31,7 +31,6 @@ export default class Demo extends Phaser.Scene {
 		this.entities.add(this.player);
 
 		this.anims.createFromAseprite(ASSET_KEYS.DWAYNE);
-		const fields = 
 		this.dwayne = createDwayne(this);
 		this.entities.add(this.dwayne);
 	}
