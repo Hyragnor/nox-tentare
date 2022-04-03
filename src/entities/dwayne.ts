@@ -97,7 +97,6 @@ export function createDwayne(
 				if (!next || next != 'f' ) { return; }
 				const animation = findAnimation(x + dx, y + dy);
 				const direction = animation === 'forward' ? findDirection(x + dx, y + dy): 'right';
-				console.log(animation, direction)
 				nextPieces.push({ x, y, dx, dy });
 				createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs }, animation, direction );
 			})
