@@ -35,8 +35,8 @@ const createArray = (width: number, height: number ) => {
 
 export function createDwayne(
 	context: Phaser.Scene,
-	{ map, x, y }: { map: string[][], x: number, y: number } = {
-		x: 0, y: 5, map: createArray(16, 14),
+	{ map, x, y, xOffs, yOffs }: { map: string[][], x: number, y: number, xOffs: number, yOffs: number } = {
+		x: 0, y: 5, map: createArray(16, 14), xOffs: 0, yOffs: 0
 	}): Dwayne
 {
 	map[x][y] = 'd';
@@ -51,12 +51,12 @@ export function createDwayne(
 				const next = map[x+dx][y+dy];
 				if (!next || next != 'f') { return; }
 
-				createDwayne(context, { map, x: x+dx, y: y+dy });
+				createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs });
 			})
 		});
 	};
 
-	const sprite = context.physics.add.sprite(x * TILESIZE, y * TILESIZE, ASSET_KEYS.DWAYNE);
+	const sprite = context.physics.add.sprite(x * TILESIZE + xOffs, y * TILESIZE + yOffs, ASSET_KEYS.DWAYNE);
 	sprite.body.setSize(TILESIZE/2, TILESIZE/2);
 	const startField: DwayneField = {
 		animationStyle: 'forward',
