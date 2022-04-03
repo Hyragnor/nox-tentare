@@ -126,16 +126,12 @@ export function createDwayne(
 		}
 	};
 
-	const sprite = context.physics.add.sprite(x * TILESIZE + xOffs, y * TILESIZE + yOffs, ASSET_KEYS.DWAYNE);
-	sprite.body.setSize(TILESIZE/2, TILESIZE/2);
+	const sprite = context.physics.add.staticSprite(x * TILESIZE + xOffs, y * TILESIZE + yOffs, ASSET_KEYS.DWAYNE);
+	sprite.body.setSize(TILESIZE, TILESIZE);
 	sprite.angle = animationStyle === 'forward'? direction2Angle(direction): 0;
-	const startField: DwayneField = {
-		animationStyle,
-		direction,
-		sprite: sprite,
-	};
+
 	dwayneSprites.push(sprite);
-	sprite.play({ key: styleToName(startField.animationStyle), repeat: 0 }, true);
+	sprite.play({ key: styleToName(animationStyle), repeat: 0 }, true);
 	sprite.on('animationcomplete', startNeighbors)
 
 	const update = (updateParams: UpdateParams) => {
@@ -153,9 +149,3 @@ export type Dwayne = {
 type DwayneAnimationStyle = 'idle' | 'forward' | 'left' | 'right' | 'back-left' | 'back-right';
 
 type Direction = 'up' | 'down' | 'left' | 'right';
-
-export type DwayneField = { 
-	sprite: Sprite;
-	animationStyle: DwayneAnimationStyle;
-	direction: Direction;
-}

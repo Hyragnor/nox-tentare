@@ -56,12 +56,21 @@ export function createPlayer(sprite: Sprite): Player {
 
 		return 'move-right';
 	};
+	let dead = false;
+	const kill = () => dead = true;
+	const isDead = () => dead;
 
+	const getSprite = () => sprite;
 	return {
+		getSprite,
+		isDead,
+		kill,
 		update
 	};
 }
 
 export type Player = {
-
+	getSprite: () => Sprite;
+	isDead: () => boolean;
+	kill: () => void;
 } & Entity
