@@ -53,6 +53,10 @@ export function createDwayne(
 		}
 	}
 
+	const isActive = (x: number, y: number) => {
+		return map[y] && map[y][x] === 'd!' || map[y][x] === 'd~';
+	}
+
 	const findAnimation = (x: number, y:number): DwayneAnimationStyle => {
 		const points = [ -1, 0, 1 ];
 		let counter = 0;
@@ -61,25 +65,25 @@ export function createDwayne(
 			points.forEach(dx => {
 				if (dx === 0 && dy === 0) { return; }
 				const next = map[y+dy][x+dx];
-				if (next === 'd' || next === 'd!') {
+				if (next === 'd~' || next === 'd!') {
 					counter ++;
 				}
 			});
 		});
 		if (counter === 1) {
-			if (map[y - 1] && map[y - 1][x - 1].startsWith('d')) { return 'right'; }
-			if (map[y - 1] && map[y - 1][x + 1].startsWith('d')) { return 'back-left'; }
-			if (map[y + 1] && map[y + 1][x + 1].startsWith('d')) { return 'back-right'; }
-			if (map[y + 1] && map[y + 1][x - 1].startsWith('d')) { return 'left'; }
+			if (isActive(x - 1, y - 1)) { return 'right'; }
+			if (isActive(x + 1, y - 1)) { return 'back-left'; }
+			if (isActive(x + 1, y + 1)) { return 'back-right'; }
+			if (isActive(x - 1, y + 1)) { return 'left'; }
 		}
 		return 'forward';
 	}
 
 	const findDirection = (x: number, y:number): Direction => {
-		if (map[y][x + 1] && map[y][x + 1].startsWith('d')) { return 'left'; }
-		if (map[y - 1] && map[y - 1][x].startsWith('d')) { return 'down'; }
-		if (map[y + 1] && map[y + 1][x].startsWith('d')) { return 'up'; }
-		if (map[y][x - 1] && map[y][x - 1].startsWith('d')) { return 'right'; }
+		if (isActive(x + 1, y)) { return 'left'; }
+		if (isActive(x - 1, y)) { return 'right'; }
+		if (isActive(x, y - 1)) { return 'down'; }
+		if (isActive(x, y + 1)) { return 'up'; }
 		return 'right';
 	}
 
@@ -93,6 +97,7 @@ export function createDwayne(
 				if (!next || next != 'f' ) { return; }
 				const animation = findAnimation(x + dx, y + dy);
 				const direction = animation === 'forward' ? findDirection(x + dx, y + dy): 'right';
+				console.log(animation, direction)
 				nextPieces.push({ x, y, dx, dy });
 				createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs }, animation, direction );
 			})
