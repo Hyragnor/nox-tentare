@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="16" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
- <editorsettings>
-  <export target="first-room.json" format="json"/>
- </editorsettings>
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="16" height="12" tilewidth="32" tileheight="32" nextobjectid="1">
  <tileset firstgid="1" name="atlas" tilewidth="32" tileheight="32" tilecount="144" columns="12">
-  <image source="../tiles/atlas.png" width="384" height="384"/>
+  <image source="atlas.png" width="384" height="384"/>
+  <tile id="1">
+   <properties>
+    <property name="key" value="w"/>
+   </properties>
+  </tile>
+  <tile id="60">
+   <properties>
+    <property name="key" value="w"/>
+   </properties>
+  </tile>
+  <tile id="72">
+   <properties>
+    <property name="key" value="w"/>
+   </properties>
+  </tile>
+  <tile id="84">
+   <properties>
+    <property name="key" value="x"/>
+   </properties>
+  </tile>
+  <tile id="96">
+   <properties>
+    <property name="key" value="x"/>
+   </properties>
+  </tile>
+  <tile id="120">
+   <properties>
+    <property name="key" value="f"/>
+   </properties>
+  </tile>
  </tileset>
- <layer id="1" name="floor" width="16" height="12">
+ <layer name="floor" width="16" height="12">
   <data encoding="csv">
 3221225533,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1073741885,
 73,121,121,121,121,121,121,121,121,121,121,121,121,121,121,73,
@@ -22,7 +49,7 @@
 2147483709,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,1610612809,61
 </data>
  </layer>
- <layer id="2" name="interactive-objects" width="16" height="12">
+ <layer name="interactive-objects" width="16" height="12">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
