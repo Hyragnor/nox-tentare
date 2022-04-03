@@ -24,13 +24,16 @@ export default class Demo extends Phaser.Scene {
 	create() {
 		const map = this.make.tilemap({ key: ASSET_KEYS.MAP });
 		const tileset = map.addTilesetImage(ASSET_KEYS.TILES_NAME, ASSET_KEYS.TILES);
-		map.createLayer(ASSET_KEYS.TILE_FLOOR, tileset);
+		const floorLayer = map.createLayer(ASSET_KEYS.TILE_FLOOR, tileset);
+		floorLayer.setCollisionByProperty({collidable: true});
 		map.createLayer(ASSET_KEYS.TILE_INTERACTIVE_OBJECTS, tileset);
 		const mapAsArray = map2StringArray(map);
 
 		this.anims.createFromAseprite(ASSET_KEYS.PLAYER);
-		this.player = createPlayer(this.physics.add.sprite(48, 48, ASSET_KEYS.PLAYER));
+		const playerSprite = this.physics.add.sprite(48, 48, ASSET_KEYS.PLAYER);
+		this.player = createPlayer(playerSprite);
 		this.entities.add(this.player);
+		this.physics.world.addCollider(playerSprite, floorLayer);
 
 		this.anims.createFromAseprite(ASSET_KEYS.DWAYNE);
 		this.dwayne = createDwayne(this, { map: mapAsArray, x: 0, y: 6, xOffs: 16, yOffs: 16});
@@ -38,6 +41,7 @@ export default class Demo extends Phaser.Scene {
 	}
 
 	update() {
-		this.entities.forEach((entity) => entity.update({}));
+		const cursors = this.input.keyboard.createCursorKeys();
+		this.entities.forEach((entity) => entity.update({ cursors }));
 	}
 }

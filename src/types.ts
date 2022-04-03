@@ -3,7 +3,7 @@ export type Entity = {
 }
 
 export type UpdateParams = {
-
+	cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 }
 
 export type Sprite = Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;

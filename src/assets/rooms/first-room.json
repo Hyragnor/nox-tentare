@@ -43,18 +43,22 @@
             {
              "1":
                 {
+                 "collidable":true,
                  "key":"w"
                 },
              "120":
                 {
+                 "collidable":false,
                  "key":"f"
                 },
              "60":
                 {
+                 "collidable":true,
                  "key":"w"
                 },
              "72":
                 {
+                 "collidable":true,
                  "key":"w"
                 },
              "84":
@@ -70,18 +74,22 @@
             {
              "1":
                 {
+                 "collidable":"bool",
                  "key":"string"
                 },
              "120":
                 {
+                 "collidable":"bool",
                  "key":"string"
                 },
              "60":
                 {
+                 "collidable":"bool",
                  "key":"string"
                 },
              "72":
                 {
+                 "collidable":"bool",
                  "key":"string"
                 },
              "84":
