@@ -1,6 +1,6 @@
 import { Entity, Sprite, UpdateParams } from '../types';
 
-const SPEED_FACTOR = 8;
+const SPEED_FACTOR = 4;
 export function createPlayer(sprite: Sprite): Player {
 	const data = {
 		state: 'idle',

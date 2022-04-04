@@ -35,9 +35,13 @@ export default class Demo extends Phaser.Scene {
 		this.entities.add(this.player);
 		this.physics.world.addCollider(this.player.getSprite(), room.floorLayer);
 
+		this.cameras.main.startFollow(this.player.getSprite());
+
 		this.anims.createFromAseprite(ASSET_KEYS.DWAYNE);
 		this.dwayne = createDwayne(this, { map: room.fields, x: 0, y: 6, xOffs: 16, yOffs: 16 });
 		this.entities.add(this.dwayne);
+
+		
 
 		createSounds(this);
 		playNextSong();
@@ -68,7 +72,8 @@ export default class Demo extends Phaser.Scene {
 		const pSprite = this.player?.getSprite();
 		if (pSprite) {
 			shape.beginPath();
-			shape.fillCircle(pSprite.body.center.x, pSprite.body.center.y, 200)
+			// shape.fillCircle(pSprite.body.center.x, pSprite.body.center.y, 200)
+			shape.fillCircle(this.cameras.main.centerX, this.cameras.main.centerY, 120)
 	
 			const mask = shape.createGeometryMask();
 	

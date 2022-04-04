@@ -138,7 +138,6 @@ export function createDwayne(
 	sprite.on('animationcomplete', startNeighbors)
 	
 	sprite.anims.msPerFrame = msPerFrame;
-	console.log(sprite.anims.msPerFrame);
 
 	const update = (updateParams: UpdateParams) => {
 		msPerFrame -= updateParams.delta / DIFFICULTY_SCALE_DIVIDER;
