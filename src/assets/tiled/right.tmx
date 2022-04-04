@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="9" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
+ <tileset firstgid="1" name="atlas" tilewidth="32" tileheight="32" tilecount="144" columns="12">
+  <image source="../rooms/atlas.png" width="384" height="384"/>
+  <tile id="1">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+    <property name="key" value="w"/>
+   </properties>
+  </tile>
+  <tile id="60">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+    <property name="key" value="w"/>
+   </properties>
+  </tile>
+  <tile id="72">
+   <properties>
+    <property name="collidable" type="bool" value="true"/>
+    <property name="key" value="w"/>
+   </properties>
+  </tile>
+  <tile id="84">
+   <properties>
+    <property name="key" value="x"/>
+   </properties>
+  </tile>
+  <tile id="96">
+   <properties>
+    <property name="key" value="x"/>
+   </properties>
+  </tile>
+  <tile id="108">
+   <properties>
+    <property name="key" value="x"/>
+   </properties>
+  </tile>
+  <tile id="120">
+   <properties>
+    <property name="key" value="f"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer id="1" name="floor" width="9" height="15">
+  <data encoding="csv">
+3221225533,2684354633,2684354633,2684354633,2684354633,2684354633,2684354633,2684354633,1610612797,
+73,121,121,121,121,121,121,121,73,
+73,121,121,121,121,121,121,121,73,
+73,121,121,121,121,121,121,121,73,
+73,121,121,121,121,121,121,121,73,
+73,121,121,121,121,121,121,121,73,
+2,121,121,121,121,121,121,121,2,
+121,121,121,121,121,121,121,121,121,
+3221225474,121,121,121,121,121,121,121,3221225474,
+73,121,121,121,121,121,121,121,73,
+73,121,121,121,121,121,121,121,73,
+73,121,121,121,121,121,121,121,73,
+73,121,121,121,121,121,121,121,73,
+73,121,121,121,121,121,121,121,73,
+2684354621,2684354633,2684354633,2684354633,2684354633,2684354633,2684354633,2684354633,61
+</data>
+ </layer>
+</map>
