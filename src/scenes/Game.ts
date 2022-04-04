@@ -27,12 +27,8 @@ export default class Demo extends Phaser.Scene {
 	create() {
 		const room = createRoom(this, ASSET_KEYS.ROOM_1);
 		this.scene.setVisible(false, 'gameScene');
-		// const map = this.make.tilemap({ key: ASSET_KEYS.MAP });
-		// const tileset = map.addTilesetImage(ASSET_KEYS.TILES_NAME, ASSET_KEYS.TILES);
-		// const floorLayer = map.createLayer(ASSET_KEYS.TILE_FLOOR, tileset);
-		// floorLayer.setCollisionByProperty({collidable: true});
-		// map.createLayer(ASSET_KEYS.TILE_INTERACTIVE_OBJECTS, tileset);
-		// const mapAsArray = map2StringArray(map);
+		
+		const map = this.make.tilemap({ key: ASSET_KEYS.MAP });
 
 		this.anims.createFromAseprite(ASSET_KEYS.PLAYER);
 		this.player = createPlayer(this.physics.add.sprite(48, 48, ASSET_KEYS.PLAYER));
@@ -64,6 +60,19 @@ export default class Demo extends Phaser.Scene {
 		if (this.deleteMeWhenSongChangeIsImplementedCorrectly >= 260000) {
 			playNextSong();
 			this.deleteMeWhenSongChangeIsImplementedCorrectly -= 260000;
+		}
+
+
+		const shape = this.make.graphics({}, false);
+
+		shape.beginPath();
+		const pSprite = this.player?.getSprite();
+		if (pSprite) {
+			shape.fillCircle(pSprite.body.center.x, pSprite.body.center.y, 100)
+	
+			const mask = shape.createGeometryMask();
+	
+			this.cameras.main.setMask(mask);
 		}
 	}
 }

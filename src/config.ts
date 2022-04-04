@@ -4,7 +4,7 @@ import Game from './scenes/Game';
 const config: Phaser.Types.Core.GameConfig =  {
 	type: Phaser.AUTO,
 	parent: 'game',
-	backgroundColor: '#33A5E7',
+	backgroundColor: '#000',
 	scale: {
 		width: 640,
 		height: 640,
