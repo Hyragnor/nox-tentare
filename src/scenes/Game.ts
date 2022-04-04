@@ -19,6 +19,7 @@ export default class Demo extends Phaser.Scene {
 	entities = new Set<Entity>();
 	player?: Player;
 	dwayne?: Dwayne;
+	stringMap?: string[][];
 	
 	preload() {
 		assetLoader(this);
@@ -30,6 +31,7 @@ export default class Demo extends Phaser.Scene {
 		
 		const map = this.make.tilemap({ key: ASSET_KEYS.MAP });
 
+		this.stringMap = room.fields;
 		this.anims.createFromAseprite(ASSET_KEYS.PLAYER);
 		this.player = createPlayer(this.physics.add.sprite(48, 48, ASSET_KEYS.PLAYER));
 		this.entities.add(this.player);
@@ -45,6 +47,30 @@ export default class Demo extends Phaser.Scene {
 
 		createSounds(this);
 		playNextSong();
+	}
+
+
+	createSpotLight(x: number, y: number, radius: number) {
+		if (!this.stringMap) { return; }
+		const intRad = Math.ceil(radius/32.);
+		const intX = Math.ceil(x/32.); 
+		const intY = Math.ceil(y/32.); 
+		const indexes: { x: number, y: number}[] = [];
+		for (let iY = Math.min( intY-intRad, 0); iY < Math.min(intY + intRad, this.stringMap.length); iY++) {
+			if (! this.stringMap[iY] ) { continue; }
+			for (let iX = Math.min( intX-intRad, 0); iX < Math.min(intX + intRad, this.stringMap[iY].length); iX++) {
+				if (this.stringMap[iY][iX] === 'w') indexes.push({ x: iX, y: iY });
+			}
+		}
+
+		const shape = this.make.graphics({}, false);
+		shape.beginPath();
+		shape.fillStyle(0xffffff);
+
+		shape.fillCircle(x, y, 100);
+		
+		shape.fillPath();
+		return shape.createGeometryMask();
 	}
 
 	deleteMeWhenSongChangeIsImplementedCorrectly: number = 0;
@@ -66,18 +92,15 @@ export default class Demo extends Phaser.Scene {
 			this.deleteMeWhenSongChangeIsImplementedCorrectly -= 260000;
 		}
 
-
-		const shape = this.make.graphics({}, false);
-
 		const pSprite = this.player?.getSprite();
 		if (pSprite) {
-			shape.beginPath();
-			// shape.fillCircle(pSprite.body.center.x, pSprite.body.center.y, 200)
-			shape.fillCircle(this.cameras.main.centerX, this.cameras.main.centerY, 120)
-	
-			const mask = shape.createGeometryMask();
-	
-			this.cameras.main.setMask(mask);
+			const radius = 150;
+			const x = this.cameras.main.centerX;
+			const y = this.cameras.main.centerY ;
+			const mask = this.createSpotLight(x, y, radius);
+			if (mask) {
+				this.cameras.main.setMask(mask);
+			}
 		}
 	}
 }
