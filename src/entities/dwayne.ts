@@ -13,6 +13,7 @@ const styleToName = (style: DwayneAnimationStyle): string => {
 }
 
 const TILESIZE = 32;
+const DIFFICULTY_SCALE_DIVIDER = 1000;
 
 const createDummyArray = () => {
 	return [
@@ -34,6 +35,8 @@ const createDummyArray = () => {
 };
 
 export const dwayneSprites: Phaser.Physics.Arcade.Sprite[] = [];
+
+let msPerFrame = 200;
 
 export function createDwayne(
 	context: Phaser.Scene,
@@ -129,14 +132,16 @@ export function createDwayne(
 	const sprite = context.physics.add.staticSprite(x * TILESIZE + xOffs, y * TILESIZE + yOffs, ASSET_KEYS.DWAYNE);
 	sprite.body.setSize(TILESIZE, TILESIZE);
 	sprite.angle = animationStyle === 'forward'? direction2Angle(direction): 0;
-	sprite.anims.duration = 1000;
-
+	
 	dwayneSprites.push(sprite);
 	sprite.play({ key: styleToName(animationStyle), repeat: 0 }, true);
 	sprite.on('animationcomplete', startNeighbors)
+	
+	sprite.anims.msPerFrame = msPerFrame;
+	console.log(sprite.anims.msPerFrame);
 
 	const update = (updateParams: UpdateParams) => {
-
+		msPerFrame -= updateParams.delta / DIFFICULTY_SCALE_DIVIDER;
 	};
 	return {
 		update
