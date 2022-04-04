@@ -65,10 +65,10 @@ export default class Demo extends Phaser.Scene {
 
 		const shape = this.make.graphics({}, false);
 
-		shape.beginPath();
 		const pSprite = this.player?.getSprite();
 		if (pSprite) {
-			shape.fillCircle(pSprite.body.center.x, pSprite.body.center.y, 100)
+			shape.beginPath();
+			shape.fillCircle(pSprite.body.center.x, pSprite.body.center.y, 200)
 	
 			const mask = shape.createGeometryMask();
 	

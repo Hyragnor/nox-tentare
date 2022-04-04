@@ -129,6 +129,7 @@ export function createDwayne(
 	const sprite = context.physics.add.staticSprite(x * TILESIZE + xOffs, y * TILESIZE + yOffs, ASSET_KEYS.DWAYNE);
 	sprite.body.setSize(TILESIZE, TILESIZE);
 	sprite.angle = animationStyle === 'forward'? direction2Angle(direction): 0;
+	sprite.anims.duration = 1000;
 
 	dwayneSprites.push(sprite);
 	sprite.play({ key: styleToName(animationStyle), repeat: 0 }, true);
