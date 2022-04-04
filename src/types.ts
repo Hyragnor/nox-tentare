@@ -4,6 +4,7 @@ export type Entity = {
 
 export type UpdateParams = {
 	cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+	delta: number
 }
 
 export type Sprite = Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;

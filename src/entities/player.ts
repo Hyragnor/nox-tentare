@@ -1,6 +1,6 @@
 import { Entity, Sprite, UpdateParams } from '../types';
 
-const SPEED = 32;
+const SPEED_FACTOR = 8;
 export function createPlayer(sprite: Sprite): Player {
 	const data = {
 		state: 'idle',
@@ -9,31 +9,33 @@ export function createPlayer(sprite: Sprite): Player {
 	sprite.body.setSize(16, 16);
 	
 	const update = (updateParams: UpdateParams) => {
-		const cursors = updateParams.cursors;
-		
+		const { cursors, delta } = updateParams;
+
+		const speed = SPEED_FACTOR * delta;
+
 		if (!cursors) {
 			return ;
 		}
 		
 		if (cursors.left.isDown) {
-			movement.x = -SPEED;
+			movement.x = -speed;
 		} else if (cursors.right.isDown) {
-			movement.x = SPEED;
+			movement.x = speed;
 		} else {
 			movement.x = 0;
 		}
 
 		if (cursors.up.isDown) {
-			movement.y = -SPEED;
+			movement.y = -speed;
 		}
 		else if (cursors.down.isDown) {
-			movement.y = SPEED;
+			movement.y = speed;
 		} else {
 			movement.y = 0;
 		}
 		
 		sprite.setVelocity(movement.x, movement.y);
-		sprite.body.velocity.normalize().scale(SPEED);
+		sprite.body.velocity.normalize().scale(speed);
 		sprite.play({ key: getAnimKey(movement), repeat: -1 }, true);
 	};
 	

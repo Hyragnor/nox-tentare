@@ -53,7 +53,7 @@ export default class Demo extends Phaser.Scene {
 				}
 			}
 		}
-		this.entities.forEach((entity) => entity.update({ cursors }));
+		this.entities.forEach((entity) => entity.update({ cursors, delta }));
 
 		// changes the song roughly every 4:18min, should be removed
 		this.deleteMeWhenSongChangeIsImplementedCorrectly += delta;
