@@ -6,8 +6,13 @@ import dwayneData from './assets/dwayne.json';
 
 import tiles from './assets/rooms/atlas.png';
 
+import doorImage from './assets/new-door/door.png';
+// import doorData from './assets/new-door/door.json';
+
 import room_a from './assets/rooms/first-room.json';
 import room_1 from './assets/rooms/left-down.json';
+
+import room_right from './assets/rooms/right.json'
 
 import song1 from './assets/music/nox tentare1.ogg';
 import song2 from './assets/music/nox tentare2.ogg';
@@ -21,17 +26,22 @@ export const ASSET_KEYS = {
 	TILES: 'tile-map',
 	TILES_NAME: 'atlas', // equals the name of the tileset used in the map
 	TILE_FLOOR: 'floor',
+	TILE_ITEM: 'items',
 	TILE_INTERACTIVE_OBJECTS: 'interactive-objects',
 	MUSIC_1: 'music_1',
 	MUSIC_2: 'music_2',
 	MUSIC_3: 'music_3',
 	DOOR: 'door',
+	ROOM_ALL_DIRECTIONS: 'room_all_directions',
+	ROOM_RIGHT: 'room_right',
 }
 
 export function assetLoader(context: Phaser.Scene) {
 	context.load.image(ASSET_KEYS.TILES, tiles);
 	context.load.tilemapTiledJSON(ASSET_KEYS.MAP, room_a);
 	context.load.tilemapTiledJSON(ASSET_KEYS.ROOM_1, room_1);
+
+	context.load.tilemapTiledJSON(ASSET_KEYS.ROOM_RIGHT, room_right);
 
 	context.load.aseprite(ASSET_KEYS.PLAYER, playerImage, playerData);
 	context.load.aseprite(ASSET_KEYS.DWAYNE, dwayneImage, dwayneData);

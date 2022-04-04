@@ -1,4 +1,4 @@
-import type { Entity } from '../types';
+import type { Entity, Vector } from '../types';
 
 import Phaser from 'phaser';
 
@@ -9,7 +9,7 @@ import { assetLoader, ASSET_KEYS } from '../assetLoader';
 import { map2StringArray } from '../utils/mapTransformer';
 
 import { createSounds, playNextSong } from '../utils/sound';
-import { createRoom } from '../utils/room';
+import { createRoom, Room } from '../utils/room';
 
 export default class Demo extends Phaser.Scene {
 	constructor() {
@@ -20,6 +20,7 @@ export default class Demo extends Phaser.Scene {
 	player?: Player;
 	dwayne?: Dwayne;
 	stringMap?: string[][];
+	rooms = new Map<string, Room>();
 	
 	preload() {
 		assetLoader(this);
@@ -28,20 +29,21 @@ export default class Demo extends Phaser.Scene {
 	create() {
 		this.scene.setVisible(false, 'gameScene');
 		
-		const map = this.make.tilemap({ key: ASSET_KEYS.MAP });
+		// const map = this.make.tilemap({ key: ASSET_KEYS.MAP });
 		
 		this.anims.createFromAseprite(ASSET_KEYS.PLAYER);
+		this.anims.createFromAseprite(ASSET_KEYS.DWAYNE);
 		this.player = createPlayer(this.physics.add.sprite(48, 48, ASSET_KEYS.PLAYER));
 		this.entities.add(this.player);
 		// this.physics.world.addCollider(this.player.getSprite(), room.floorLayer);
 		
 		this.cameras.main.startFollow(this.player.getSprite());
 		
-		const room = createRoom(this, ASSET_KEYS.ROOM_1, this.player.getSprite());
-		createRoom(this, ASSET_KEYS.ROOM_1, this.player.getSprite(), 0, 448)
+		const room = createRoom(this, ASSET_KEYS.ROOM_RIGHT, this.player.getSprite(), 0, 0, this.rooms);
+		this.rooms.set('0 0', room);
+		this.rooms.set('256 0', createRoom(this, ASSET_KEYS.ROOM_RIGHT, this.player.getSprite(), 256, 0, this.rooms));
 		this.stringMap = room.fields;
-		this.anims.createFromAseprite(ASSET_KEYS.DWAYNE);
-		this.dwayne = createDwayne(this, { map: room.fields, x: 0, y: 6, xOffs: 16, yOffs: 16 });
+		this.dwayne = createDwayne(this, { map: room.fields, x: 0, y: 6, xOffs: 16, yOffs: 16 }, undefined, undefined, room.triggerRoom);
 		this.entities.add(this.dwayne);
 
 		this.player.getSprite().depth = 100;

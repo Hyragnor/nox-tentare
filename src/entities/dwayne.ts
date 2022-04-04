@@ -45,6 +45,7 @@ export function createDwayne(
 	},
 	animationStyle: DwayneAnimationStyle = 'idle',
 	direction: Direction = 'right',
+	triggerRoom: (x: number, y: number) => void,
 ): Dwayne {
 
 	const direction2Angle = (direction: Direction): number => {
@@ -97,11 +98,16 @@ export function createDwayne(
 			if (!map[y+dy]) { return; }
 			points.forEach(dx => {
 				const next = map[y+dy][x+dx];
-				if (!next || next != 'f' ) { return; }
+				if (!next || next != 'f' ) {
+					if (next === 'd') {
+						triggerRoom(x, y);
+					}
+					return; 
+				}
 				const animation = findAnimation(x + dx, y + dy);
 				const direction = animation === 'forward' ? findDirection(x + dx, y + dy): 'right';
 				nextPieces.push({ x, y, dx, dy });
-				createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs }, animation, direction );
+				createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs }, animation, direction, triggerRoom );
 			})
 		});
 		nextPieces.forEach(({ x, y, dx, dy}) => { 
