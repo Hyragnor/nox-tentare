@@ -1,0 +1,183 @@
+{ "compressionlevel":-1,
+ "height":16,
+ "infinite":false,
+ "layers":[
+        {
+         "data":[3758096445, 1610612809, 1610612809, 1610612809, 1610612809, 1610612809, 1610612809, 1610612809, 1610612809, 1610612809, 1610612809, 1073741885,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            2, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            3221225474, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            73, 121, 121, 121, 121, 121, 121, 121, 121, 121, 121, 3221225545,
+            2147483709, 2684354633, 2684354633, 2684354633, 2684354633, 1610612738, 121, 2684354562, 2684354633, 2684354633, 2684354633, 536870973],
+         "height":16,
+         "id":1,
+         "name":"floor",
+         "opacity":1,
+         "type":"tilelayer",
+         "visible":true,
+         "width":12,
+         "x":0,
+         "y":0
+        }, 
+        {
+         "draworder":"topdown",
+         "id":2,
+         "name":"items",
+         "objects":[
+                {
+                 "height":32,
+                 "id":2,
+                 "name":"door",
+                 "properties":[
+                        {
+                         "name":"open",
+                         "type":"bool",
+                         "value":false
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":12,
+                 "x":32,
+                 "y":192
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
+        }],
+ "nextlayerid":3,
+ "nextobjectid":3,
+ "orientation":"orthogonal",
+ "renderorder":"right-down",
+ "tiledversion":"1.8.4",
+ "tileheight":32,
+ "tilesets":[
+        {
+         "columns":12,
+         "firstgid":1,
+         "image":"atlas.png",
+         "imageheight":384,
+         "imagewidth":384,
+         "margin":0,
+         "name":"atlas",
+         "spacing":0,
+         "tilecount":144,
+         "tileheight":32,
+         "tiles":[
+                {
+                 "id":1,
+                 "properties":[
+                        {
+                         "name":"collidable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"key",
+                         "type":"string",
+                         "value":"w"
+                        }]
+                }, 
+                {
+                 "id":60,
+                 "properties":[
+                        {
+                         "name":"collidable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"key",
+                         "type":"string",
+                         "value":"w"
+                        }]
+                }, 
+                {
+                 "id":72,
+                 "properties":[
+                        {
+                         "name":"collidable",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"key",
+                         "type":"string",
+                         "value":"w"
+                        }]
+                }, 
+                {
+                 "id":84,
+                 "properties":[
+                        {
+                         "name":"collidable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"key",
+                         "type":"string",
+                         "value":"x"
+                        }]
+                }, 
+                {
+                 "id":96,
+                 "properties":[
+                        {
+                         "name":"collidable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"key",
+                         "type":"string",
+                         "value":"x"
+                        }]
+                }, 
+                {
+                 "id":108,
+                 "properties":[
+                        {
+                         "name":"collidable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"key",
+                         "type":"string",
+                         "value":"x"
+                        }]
+                }, 
+                {
+                 "id":120,
+                 "properties":[
+                        {
+                         "name":"collidable",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"key",
+                         "type":"string",
+                         "value":"f"
+                        }]
+                }],
+         "tilewidth":32
+        }],
+ "tilewidth":32,
+ "type":"map",
+ "version":"1.8",
+ "width":12
+}

@@ -7,3 +7,5 @@ export type UpdateParams = {
 }
 
 export type Sprite = Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+
+export type Vector = { x: Number; y: Number };
