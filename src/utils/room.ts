@@ -1,15 +1,16 @@
 import { ASSET_KEYS } from '../assetLoader';
 import { createDoor, Door } from '../entities/door';
-import type { Entity, Vector } from '../types';
+import type { Entity, Sprite, Vector } from '../types';
 import { map2StringArray } from './mapTransformer';
 
-const createRoom = (context: Phaser.Scene, room: string) => {
+const createRoom = (context: Phaser.Scene, room: string, player: Sprite, offsetX = 0, offsetY = 0) => {
 	const map = context.make.tilemap({ key: room });
 	const tileset = map.addTilesetImage(ASSET_KEYS.TILES_NAME, ASSET_KEYS.TILES);
-	const floorLayer = map.createLayer(ASSET_KEYS.TILE_FLOOR, tileset);
+	const floorLayer = map.createLayer(ASSET_KEYS.TILE_FLOOR, tileset, offsetX, offsetY);
 	const items = map.createFromObjects('items', []);
 
 	floorLayer.setCollisionByProperty({collidable: true});
+	context.physics.add.collider(floorLayer, player);
 	
 	const fields = map2StringArray(map);
 

@@ -26,24 +26,25 @@ export default class Demo extends Phaser.Scene {
 	}
 
 	create() {
-		const room = createRoom(this, ASSET_KEYS.ROOM_1);
 		this.scene.setVisible(false, 'gameScene');
 		
 		const map = this.make.tilemap({ key: ASSET_KEYS.MAP });
-
-		this.stringMap = room.fields;
+		
 		this.anims.createFromAseprite(ASSET_KEYS.PLAYER);
 		this.player = createPlayer(this.physics.add.sprite(48, 48, ASSET_KEYS.PLAYER));
 		this.entities.add(this.player);
-		this.physics.world.addCollider(this.player.getSprite(), room.floorLayer);
-
+		// this.physics.world.addCollider(this.player.getSprite(), room.floorLayer);
+		
 		this.cameras.main.startFollow(this.player.getSprite());
-
+		
+		const room = createRoom(this, ASSET_KEYS.ROOM_1, this.player.getSprite());
+		createRoom(this, ASSET_KEYS.ROOM_1, this.player.getSprite(), 0, 448)
+		this.stringMap = room.fields;
 		this.anims.createFromAseprite(ASSET_KEYS.DWAYNE);
 		this.dwayne = createDwayne(this, { map: room.fields, x: 0, y: 6, xOffs: 16, yOffs: 16 });
 		this.entities.add(this.dwayne);
 
-		
+		this.player.getSprite().depth = 100;
 
 		createSounds(this);
 		playNextSong();
