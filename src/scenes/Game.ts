@@ -23,21 +23,11 @@ export default class Demo extends Phaser.Scene {
 		assetLoader(this);
 	}
 
-	createRenderTexture() {
-		const renderTexture = this.add.renderTexture(0, 0, this.scale.width, this.scale.height);
-		// const renderTexture = this.make.renderTexture({ width: this.scale.width, height: this.scale.height })
-		renderTexture.fill(0x0, 1);
-		return renderTexture;
-	};
-
 	create() {
 		this.scene.setVisible(false, 'gameScene');
-		const renderTexture = this.createRenderTexture();
 		const map = this.make.tilemap({ key: ASSET_KEYS.MAP });
 		const tileset = map.addTilesetImage(ASSET_KEYS.TILES_NAME, ASSET_KEYS.TILES);
 		const floorLayer = map.createLayer(ASSET_KEYS.TILE_FLOOR, tileset);
-		renderTexture.draw(floorLayer);
-		renderTexture.setTint(0x0a2948);
 		floorLayer.setCollisionByProperty({collidable: true});
 		map.createLayer(ASSET_KEYS.TILE_INTERACTIVE_OBJECTS, tileset);
 		const mapAsArray = map2StringArray(map);
