@@ -1,5 +1,5 @@
 import { ASSET_KEYS } from '../assetLoader';
-import { Entity, Sprite, UpdateParams } from '../types';
+import { Entity, Sprite, UpdateParams, Vector } from '../types';
 
 const styleToName = (style: DwayneAnimationStyle): string => {
 	switch(style) {
@@ -45,7 +45,8 @@ export function createDwayne(
 	},
 	animationStyle: DwayneAnimationStyle = 'idle',
 	direction: Direction = 'right',
-	triggerRoom: (x: number, y: number) => void,
+	triggerRoom: (outgoingGridPos: Vector) => void,
+	registerSprite: (dwayneSegment: Phaser.Physics.Arcade.Sprite) => void,
 ): Dwayne {
 
 	const direction2Angle = (direction: Direction): number => {
@@ -100,14 +101,14 @@ export function createDwayne(
 				const next = map[y+dy][x+dx];
 				if (!next || next != 'f' ) {
 					if (next === 'd') {
-						triggerRoom(x, y);
+						triggerRoom({ x, y });
 					}
 					return; 
 				}
 				const animation = findAnimation(x + dx, y + dy);
 				const direction = animation === 'forward' ? findDirection(x + dx, y + dy): 'right';
 				nextPieces.push({ x, y, dx, dy });
-				createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs }, animation, direction, triggerRoom );
+				createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs }, animation, direction, triggerRoom, registerSprite );
 			})
 		});
 		nextPieces.forEach(({ x, y, dx, dy}) => { 
@@ -139,7 +140,8 @@ export function createDwayne(
 	sprite.body.setSize(TILESIZE, TILESIZE);
 	sprite.angle = animationStyle === 'forward'? direction2Angle(direction): 0;
 	
-	dwayneSprites.push(sprite);
+	// dwayneSprites.push(sprite);
+	registerSprite(sprite);
 	sprite.play({ key: styleToName(animationStyle), repeat: 0 }, true);
 	sprite.on('animationcomplete', startNeighbors)
 	
