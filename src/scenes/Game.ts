@@ -3,10 +3,8 @@ import type { Entity, Vector } from '../types';
 import Phaser from 'phaser';
 
 import { createPlayer, Player } from '../entities/player';
-import { createDwayne, Dwayne, dwayneSprites } from '../entities/dwayne';
 
 import { assetLoader, ASSET_KEYS } from '../assetLoader';
-import { map2StringArray } from '../utils/mapTransformer';
 
 import { createSounds, playNextSong } from '../utils/sound';
 import { createRoom, Room } from '../utils/room';
@@ -18,7 +16,6 @@ export default class Demo extends Phaser.Scene {
 
 	entities = new Set<Entity>();
 	player?: Player;
-	dwayne?: Dwayne;
 	stringMap?: string[][];
 	rooms = new Map<string, Room>();
 	

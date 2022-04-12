@@ -1,5 +1,5 @@
 import { ASSET_KEYS } from '../assetLoader';
-import { Entity, Sprite, UpdateParams, Vector } from '../types';
+import { Entity, Parent, Sprite, UpdateParams, Vector } from '../types';
 
 const styleToName = (style: DwayneAnimationStyle): string => {
 	switch(style) {
@@ -13,7 +13,7 @@ const styleToName = (style: DwayneAnimationStyle): string => {
 }
 
 const TILESIZE = 32;
-const DIFFICULTY_SCALE_DIVIDER = 1000;
+const DELTA_STEP = 2500;
 
 const createDummyArray = () => {
 	return [
@@ -43,11 +43,10 @@ export function createDwayne(
 	{ map, x, y, xOffs, yOffs }: { map: string[][], x: number, y: number, xOffs: number, yOffs: number } = {
 		x: 0, y: 5, map: createDummyArray(), xOffs: 0, yOffs: 0
 	},
+	parent: Parent,
 	animationStyle: DwayneAnimationStyle = 'idle',
 	direction: Direction = 'right',
-	triggerRoom: (outgoingGridPos: Vector) => void,
-	registerSprite: (dwayneSegment: Phaser.Physics.Arcade.Sprite) => void,
-): Dwayne {
+) {
 
 	const direction2Angle = (direction: Direction): number => {
 		switch(direction) {
@@ -101,14 +100,14 @@ export function createDwayne(
 				const next = map[y+dy][x+dx];
 				if (!next || next != 'f' ) {
 					if (next === 'd') {
-						triggerRoom({ x, y });
+						parent.callEvent('triggerNextRoom',{ x, y });
 					}
 					return; 
 				}
 				const animation = findAnimation(x + dx, y + dy);
 				const direction = animation === 'forward' ? findDirection(x + dx, y + dy): 'right';
 				nextPieces.push({ x, y, dx, dy });
-				createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs }, animation, direction, triggerRoom, registerSprite );
+				createDwayne(context, { map, x: x+dx, y: y+dy, xOffs, yOffs }, parent, animation, direction );
 			})
 		});
 		nextPieces.forEach(({ x, y, dx, dy}) => { 
@@ -120,6 +119,7 @@ export function createDwayne(
 		map[y][x] = 'd~';
 		const done = !map.flat().find(element => element === 'd?');
 		if (!done) { return; }
+		msPerFrame -= 10;
 		for(let y = 0; y < map.length; y++) {
 			for(let x = 0; x < map[y].length; x++) {
 				if (map[y][x] === 'd~') {
@@ -141,23 +141,23 @@ export function createDwayne(
 	sprite.angle = animationStyle === 'forward'? direction2Angle(direction): 0;
 	
 	// dwayneSprites.push(sprite);
-	registerSprite(sprite);
+	parent.registerSprite(sprite);
 	sprite.play({ key: styleToName(animationStyle), repeat: 0 }, true);
 	sprite.on('animationcomplete', startNeighbors)
 	
 	sprite.anims.msPerFrame = msPerFrame;
 
+	let delteSinceLastUpdate = 0;
 	const update = (updateParams: UpdateParams) => {
-		msPerFrame -= updateParams.delta / DIFFICULTY_SCALE_DIVIDER;
+		// delteSinceLastUpdate += updateParams.delta;
+		// if (delteSinceLastUpdate > DELTA_STEP ) {
+		// 	console.log('jest', updateParams.delta);
+		// 	delteSinceLastUpdate = 0;
+		// 	msPerFrame -= 2;
+		// }
 	};
-	return {
-		update
-	}
+	parent.registerEntity({ update });
 }
-
-export type Dwayne = {
-
-} & Entity
 
 type DwayneAnimationStyle = 'idle' | 'forward' | 'left' | 'right' | 'back-left' | 'back-right';
 

@@ -1,7 +1,7 @@
 import { ASSET_KEYS } from '../assetLoader';
 import { createDoor, Door } from '../entities/door';
 import { createDwayne } from '../entities/dwayne';
-import type { Entity, Sprite, UpdateParams, Vector } from '../types';
+import type { Entity, Parent, Sprite, UpdateParams, Vector } from '../types';
 import { map2StringArray } from './mapTransformer';
 
 const createRoom = (
@@ -11,7 +11,7 @@ const createRoom = (
 	offsetX = 0,
 	offsetY = 0,
 	rooms: Map<string, { fields: string[][], triggerRoom: (outgoingGridPos: Vector) => void }>
-) => {
+): Room => {
 	const map = context.make.tilemap({ key: room });
 	const tileset = map.addTilesetImage(ASSET_KEYS.TILES_NAME, ASSET_KEYS.TILES);
 	const floorLayer = map.createLayer(ASSET_KEYS.TILE_FLOOR, tileset, offsetX, offsetY);
@@ -48,20 +48,32 @@ const createRoom = (
 		entities.sprites.push(sprite);
 	};
 
+	const registerEntity = (entity: Entity) => {
+		entities.entities.add(entity);
+	}
+
 	const triggerRoom = (entrancePos: Vector) => {
-		const dwayne = createDwayne(
+		createDwayne(
 			context,
 			{ map: fields, x: entrancePos.x, y: entrancePos.y, xOffs: 16+offsetX, yOffs: 16+offsetY },
-			undefined,
-			undefined,
-			triggerNextRoom,
-			registerSprite,
+			parent,
 		);
-		entities.entities.add(dwayne);
+	}
+
+	const parent: Parent = {
+		callEvent: (event, argument) => {
+			switch (event) {
+				case 'triggerNextRoom': {
+					triggerNextRoom(argument);
+				}
+			}
+		},
+		registerEntity,
+		registerSprite,
+		update,
 	}
 
 	const triggerNextRoom = (outgoingGridPos: Vector) => {
-		// get the next room by the grid pos of dwayne
 		if (entities.isTriggered) {
 			return ;
 		}
@@ -75,7 +87,7 @@ const createRoom = (
 		room.triggerRoom(dwayneCoords);
 	}
 
-	return { map, floorLayer, entities, fields, triggerRoom, update };
+	return { fields, triggerRoom, ...parent };
 }
 
 type RoomEntities = {
@@ -84,6 +96,9 @@ type RoomEntities = {
 	sprites: Phaser.Physics.Arcade.Sprite[];
 }
 
-export type Room = ReturnType<typeof createRoom>;
+export type Room = {
+	fields: string[][],
+	triggerRoom: (entrancePos: Vector) => void;
+} & Parent;
 
 export { createRoom };
