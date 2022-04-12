@@ -1,4 +1,4 @@
-import type { Entity, Vector } from '../types';
+import type { AvailableEventPayload, AvailableEvents, Entity, GameScene, Vector } from '../types';
 
 import Phaser from 'phaser';
 
@@ -18,9 +18,43 @@ export default class Demo extends Phaser.Scene {
 	player?: Player;
 	stringMap?: string[][];
 	rooms = new Map<string, Room>();
+	sprites = new Set<Phaser.Physics.Arcade.Sprite>();
 	
 	preload() {
 		assetLoader(this);
+	}
+
+	callEvent(event: AvailableEvents, argument: AvailableEventPayload) {
+		if (event === 'kill-player') {
+			if (!this.player) { return; }
+			console.log(this.player);
+			this.player.kill();
+		}
+	}
+
+	registerSprite(sprite: Phaser.Physics.Arcade.Sprite) {
+		this.sprites.add(sprite);
+	}
+
+	registerEntity(entity: Entity) {
+		this.entities.add(entity);
+	}
+
+	getGameScene(): GameScene {
+		const callEvent = (event: AvailableEvents, argument: AvailableEventPayload) => {
+			if (event === 'kill-player') {
+				if (!this.player) { return; }
+				this.player.kill();
+			}
+		}
+
+		return {
+			context: this,
+			callEvent,
+			registerEntity: this.registerEntity,
+			registerSprite: this.registerSprite,
+			update: () => null,
+		}
 	}
 
 	create() {
@@ -34,10 +68,10 @@ export default class Demo extends Phaser.Scene {
 		
 		this.cameras.main.startFollow(this.player.getSprite());
 		
-		const room = createRoom(this, ASSET_KEYS.ROOM_RIGHT, this.player.getSprite(), 0, 0, this.rooms);
+		const room = createRoom(this.getGameScene(), ASSET_KEYS.ROOM_RIGHT, this.player.getSprite(), 0, 0, this.rooms);
 		this.rooms.set('0 0', room);
 		room.triggerRoom({ x: 0, y: 7 });
-		this.rooms.set('256 0', createRoom(this, ASSET_KEYS.ROOM_RIGHT, this.player.getSprite(), 256, 0, this.rooms));
+		this.rooms.set('256 0', createRoom(this.getGameScene(), ASSET_KEYS.ROOM_RIGHT, this.player.getSprite(), 256, 0, this.rooms));
 
 		this.player.getSprite().depth = 100;
 
@@ -72,15 +106,12 @@ export default class Demo extends Phaser.Scene {
 	deleteMeWhenSongChangeIsImplementedCorrectly: number = 0;
 	update(time: number, delta: number) {
 		const cursors = this.input.keyboard.createCursorKeys();
-		// if(this.dwayne && dwayneSprites){
-		// 	for(const sprite of dwayneSprites){
-		// 		if(this.player && this.physics.collide(this.player.getSprite(), sprite)){
-		// 			this.player.kill();
-		// 		}
-		// 	}
-		// }
-		this.entities.forEach((entity) => entity.update({ cursors, delta }));
-		this.rooms.forEach((room) => {room.update({ cursors, delta })});
+
+		
+		if (!this.player?.isDead()) {
+			this.entities.forEach((entity) => entity.update({ cursors, delta }));
+			this.rooms.forEach((room) => {room.update({ cursors, delta })});
+		}
 
 		// changes the song roughly every 4:18min, should be removed
 		this.deleteMeWhenSongChangeIsImplementedCorrectly += delta;

@@ -9,6 +9,7 @@ export function createPlayer(sprite: Sprite): Player {
 	sprite.body.setSize(16, 16);
 	
 	const update = (updateParams: UpdateParams) => {
+		if (dead) { return; }
 		const { cursors, delta } = updateParams;
 
 		const speed = SPEED_FACTOR * delta;
@@ -59,7 +60,11 @@ export function createPlayer(sprite: Sprite): Player {
 		return 'move-right';
 	};
 	let dead = false;
-	const kill = () => dead = true;
+	const kill = () => {
+		sprite.play({ key: 'idle', repeat: -1 }, true);
+		sprite.setVelocity(0, 0);
+		dead = true;
+	}
 	const isDead = () => dead;
 
 	const getSprite = () => sprite;

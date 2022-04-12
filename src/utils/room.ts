@@ -1,11 +1,11 @@
 import { ASSET_KEYS } from '../assetLoader';
 import { createDoor, Door } from '../entities/door';
 import { createDwayne } from '../entities/dwayne';
-import type { Entity, Parent, Sprite, UpdateParams, Vector } from '../types';
+import type { Entity, GameScene, Parent, Sprite, UpdateParams, Vector } from '../types';
 import { map2StringArray } from './mapTransformer';
 
 const createRoom = (
-	context: Phaser.Scene,
+	{ context, callEvent }: GameScene,
 	room: string,
 	player: Sprite,
 	offsetX = 0,
@@ -28,20 +28,26 @@ const createRoom = (
 	};
 
 	const transferPositionFromLastRoom = ({ x, y }: Vector): Vector => {
-		if (x === 7) return { x: 0, y };
-		if (y === 13) return { x, y: 0 };
-		return { x, y: 13};
+		if (x === 8) return { x: 0, y };
+		if (y === 14) return { x, y: 0 };
+		return { x, y: 14};
 	}
 
 	// identify the next room 
 	const roomCoordStuff = ({ x, y }: Vector): Vector => {
-		if (x === 7) return { x: offsetX + 8*32, y: offsetY }; // rechts
-		if (y === 13) return { x: offsetX, y: offsetY + 14 * 32 }; // unten
+		if (x === 8) return { x: offsetX + 8*32, y: offsetY }; // rechts
+		if (y === 14) return { x: offsetX, y: offsetY + 14 * 32 }; // unten
 		return { x: offsetX, y: offsetY - 14 * 32}; //oben
 	}
 
 	const update = (params: UpdateParams) => {
 		entities.entities.forEach((entity) => { entity.update(params); });
+		for(const sprite of entities.sprites){
+			if(context.physics.overlap(player, sprite) && sprite.anims.currentFrame.isLast){
+				// console.log('dad');
+				callEvent('kill-player');
+			}
+		}
 	}
 
 	const registerSprite = (sprite: Phaser.Physics.Arcade.Sprite) => {
@@ -62,6 +68,7 @@ const createRoom = (
 
 	const parent: Parent = {
 		callEvent: (event, argument) => {
+			if (!argument) { return; }
 			switch (event) {
 				case 'triggerNextRoom': {
 					triggerNextRoom(argument);

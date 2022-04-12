@@ -100,7 +100,7 @@ export function createDwayne(
 				const next = map[y+dy][x+dx];
 				if (!next || next != 'f' ) {
 					if (next === 'd') {
-						parent.callEvent('triggerNextRoom',{ x, y });
+						parent.callEvent('triggerNextRoom',{ x: x + dx, y: y + dy });
 					}
 					return; 
 				}
@@ -140,10 +140,9 @@ export function createDwayne(
 	sprite.body.setSize(TILESIZE, TILESIZE);
 	sprite.angle = animationStyle === 'forward'? direction2Angle(direction): 0;
 	
-	// dwayneSprites.push(sprite);
 	parent.registerSprite(sprite);
 	sprite.play({ key: styleToName(animationStyle), repeat: 0 }, true);
-	sprite.on('animationcomplete', startNeighbors)
+	sprite.on('animationcomplete', startNeighbors);
 	
 	sprite.anims.msPerFrame = msPerFrame;
 

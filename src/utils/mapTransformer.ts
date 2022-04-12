@@ -4,7 +4,6 @@ import Phaser from 'phaser';
 const map2StringArray = (map: Phaser.Tilemaps.Tilemap): string[][] => {
 	const floor = map.getLayer(ASSET_KEYS.TILE_FLOOR);
 	const doors = map.getLayer(ASSET_KEYS.TILE_ITEM);
-	console.log(doors);
 	const arr = [];
 	for (let y = 0; y < floor.height; y++) {
 		const line = []
